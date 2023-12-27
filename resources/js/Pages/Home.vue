@@ -14,7 +14,8 @@ export default {
       selectedGame: '',
       selectedCampaign: '',
       shared: false,
-      gameOngoing: false
+      gameOngoing: false,
+      activeNav: 'home'
     }
   },
   methods: {
@@ -40,7 +41,7 @@ export default {
 <template>
   <Head title="Play" />
 
-  <PageLayout>
+  <PageLayout :active="activeNav">
     <main v-if="!gameOngoing">
       <h1>Select a mode</h1>
       <GameSelect :selectedMode="selectedMode" @modeUpdate="updateMode" @gameUpdate="updateGame" @gameStart="gameStart"/>

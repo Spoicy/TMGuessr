@@ -5,6 +5,7 @@ export default {
       isPlaying: false
     }
   },
+  props: ['active'],
   methods: {
     setPlaying(mode) {
       this.isPlaying = mode;
@@ -22,10 +23,10 @@ export default {
       </a>
     </div>
     <nav>
-      <a href="/">Play</a>
-      <a href="/leaderboard">Leaderboard</a>
-      <a href="/about">About</a>
-      <a href="/profile">Profile</a>
+      <a :class="{ active: active === 'home' }" href="/">Play</a>
+      <a :class="{ active: active === 'leaderboard' }" href="/leaderboard">Leaderboard</a>
+      <a :class="{ active: active === 'about' }" href="/about">About</a>
+      <a :class="{ active: active === 'profile' }" href="/profile">Profile</a>
     </nav>
   </header>
 
@@ -126,7 +127,8 @@ export default {
   }
 
   a:hover,
-  a:focus {
+  a:focus,
+  a.active {
     color: #6efaa0;
   }
 
