@@ -55,7 +55,6 @@
     right: 0;
     bottom: 0;
     display: grid;
-    width: 50%;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     .map {
