@@ -2,10 +2,11 @@
 import PageLayout from '@/Layouts/PageLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import GameSelect from '@/Components/GameSelect.vue';
+import Game from '@/Components/Game.vue';
 
 export default {
   components: {
-    GameSelect, PageLayout, Head
+    GameSelect, PageLayout, Head, Game
   },
   data() {
     return {
@@ -40,9 +41,12 @@ export default {
   <Head title="Play" />
 
   <PageLayout>
-    <main>
+    <main v-if="!gameOngoing">
       <h1>Select a mode</h1>
-      <GameSelect v-if="!gameOngoing" :selectedMode="selectedMode" @modeUpdate="updateMode" @gameUpdate="updateGame" @gameStart="gameStart"/>
+      <GameSelect :selectedMode="selectedMode" @modeUpdate="updateMode" @gameUpdate="updateGame" @gameStart="gameStart"/>
+    </main>
+    <main v-else>
+      <Game :mode="selectedMode" :game="selectedGame" :campaign="selectedCampaign" />
     </main>
   </PageLayout>
 </template>
