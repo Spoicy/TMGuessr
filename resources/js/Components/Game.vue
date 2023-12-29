@@ -6,13 +6,26 @@
     components: {
       MapSelect,
     },
+    data() {
+      return {
+        state: 'select',
+        currentMap: 9,
+        submittedAnswer: 0
+      }
+    },
+    methods: {
+      processAnswer(answer) {
+        this.submittedAnswer = answer;
+        this.state = 'results';
+      }
+    },
   }
 </script>
 
 <template>
   <div class="game">
     <div class="image-display"></div>
-    <MapSelect />
+    <MapSelect v-show="state === 'select'" @answerSubmitted="processAnswer" />
   </div>
 </template>
 

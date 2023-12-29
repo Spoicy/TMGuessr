@@ -7,7 +7,17 @@
         return colorClasses[colorIndex];
       },
       selectMap(map) {
-        console.log(map);
+        this.selectedMap = map;
+        this.submitAnswer();
+      },
+      submitAnswer() {
+        this.$emit('answerSubmitted', this.selectedMap);
+        this.selectedMap = 0;
+      }
+    },
+    data() {
+      return {
+        selectedMap: 0
       }
     },
   }
