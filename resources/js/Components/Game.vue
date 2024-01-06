@@ -1,22 +1,28 @@
 <script>
   import MapSelect from '@/Components/MapSelect.vue';
+  import Results from '@/Components/Results.vue';
 
   export default {
     props: ['mode', 'game', 'campaign'],
     components: {
-      MapSelect,
+      MapSelect, Results
     },
     data() {
       return {
         state: 'select',
         currentMap: 9,
-        submittedAnswer: 0
+        submittedAnswer: 0,
+        totalPoints: 500,
+        calculatedPoints: 500
       }
     },
     methods: {
       processAnswer(answer) {
         this.submittedAnswer = answer;
         this.state = 'results';
+      },
+      loadNext() {
+        this.state = 'select';
       }
     },
   }
@@ -26,6 +32,7 @@
   <div class="game">
     <div class="image-display"></div>
     <MapSelect v-show="state === 'select'" @answerSubmitted="processAnswer" />
+    <Results :totalPoints="totalPoints" :awardedPoints="calculatedPoints" v-if="state === 'results'" @nextPressed="loadNext" />
   </div>
 </template>
 
