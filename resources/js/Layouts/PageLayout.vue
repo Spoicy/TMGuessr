@@ -52,7 +52,7 @@ export default {
     font-family: Montserrat, sans-serif;
     font-size: 15px;
   }
-  h1, h2, h3, h4, h5, h6, a, label, span {
+  h1, h2, h3, h4, h5, h6, a, label, span, p, button {
     font-family: Montserrat, sans-serif;
   }
   h1, h2, h3, h4 {
