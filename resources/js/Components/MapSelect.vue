@@ -13,6 +13,13 @@
       submitAnswer() {
         this.$emit('answerSubmitted', this.selectedMap);
         this.selectedMap = 0;
+      },
+      getMapNumber(num) {
+        if (num < 10) {
+          return '0' + num;
+        } else {
+          return num;
+        }
       }
     },
     data() {
@@ -27,7 +34,7 @@
   <div class="map-select">
     <div class="map-grid-wrapper">
       <div class="map-grid">
-        <div v-for="index in 25" :key="index" @click="selectMap(index)" :class="['map', getColorClass(index - 1)]">{{ index }}</div>
+        <div v-for="index in 25" :key="index" @click="selectMap(index)" :class="['map', getColorClass(index - 1)]">{{ getMapNumber(index) }}</div>
       </div>
     </div>
   </div>

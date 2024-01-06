@@ -1,6 +1,15 @@
 <script>
 export default {
-  props: ['totalPoints', 'awardedPoints']
+  props: ['totalPoints', 'awardedPoints', 'correctAnswer', 'submittedAnswer'],
+  methods: {
+    getMapNumber(num) {
+      if (num < 10) {
+        return '0' + num;
+      } else {
+        return num;
+      }
+    }
+  },
 }
 </script>
 
@@ -12,12 +21,12 @@ export default {
         <div class="answer" id="answercorrect">
           <div class="answer-img"></div>
           <!--<img src="https://prod.trackmania.core.nadeo.online/storageObjects/35ebeb63-c884-4d1d-ad6e-4ca004e92b1b.jpg" alt="">-->
-          <p  class="text-center pt-2">Correct answer: 09</p>
+          <p class="text-center pt-2">Correct answer: {{ getMapNumber(correctAnswer) }}</p>
         </div>
         <div class="answer" id="answeryours">
           <div class="answer-img"></div>
           <!--<img src="https://prod.trackmania.core.nadeo.online/storageObjects/35ebeb63-c884-4d1d-ad6e-4ca004e92b1b.jpg" alt="">-->
-          <p class="text-center pt-2">Your answer: 09</p>
+          <p class="text-center pt-2">Your answer: {{ getMapNumber(submittedAnswer) }}</p>
         </div>
       </div>
       <div class="points text-center pb-3">

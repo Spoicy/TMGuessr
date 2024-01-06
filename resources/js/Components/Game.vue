@@ -10,19 +10,58 @@
     data() {
       return {
         state: 'select',
-        currentMap: 9,
+        mapPool: [9, 4, 3, 1, 7],
+        currentMap: 0,
         submittedAnswer: 0,
-        totalPoints: 500,
-        calculatedPoints: 500
+        totalPoints: 0,
+        calculatedPoints: 0,
+        timerEnabled: true,
+        timerCount: 0,
+        scorePercentage: 100
       }
     },
     methods: {
       processAnswer(answer) {
+        this.timerEnabled = false;
         this.submittedAnswer = answer;
+        this.calculateResults();
         this.state = 'results';
       },
+      calculateResults() {
+        var bottomOfColor = Math.floor(this.mapPool[this.currentMap] / 5) * 5 + 1;
+        var topOfColor = Math.ceil(this.mapPool[this.currentMap] / 5) * 5;
+        if (bottomOfColor <= this.submittedAnswer && this.submittedAnswer <= topOfColor) {
+          this.calculatedPoints += 1000;
+          this.calculatedPoints += 1000 * (4 - Math.abs(this.mapPool[this.currentMap] - this.submittedAnswer));
+          this.calculatedPoints = Math.round(this.calculatedPoints * (this.scorePercentage / 100));
+        } else {
+          this.calculatedPoints = 0;
+        }
+        this.totalPoints += this.calculatedPoints;
+      },
       loadNext() {
+        this.scorePercentage = 100;
+        this.timerCount = 0;
+        this.currentMap++;
         this.state = 'select';
+        this.timerEnabled = true;
+        this.calculatedPoints = 0;
+        this.submittedAnswer = 0;
+      }
+    },
+    watch: {
+      timerCount: {
+        handler(value) {
+          if (this.timerEnabled) {
+            setTimeout(() => {
+              this.timerCount++;
+              if (this.timerCount >= 50 && this.timerCount % 10 === 0) {
+                this.scorePercentage--;
+              }
+            }, 100)
+          }
+        },
+        immediate: true
       }
     },
   }
@@ -32,7 +71,7 @@
   <div class="game">
     <div class="image-display"></div>
     <MapSelect v-show="state === 'select'" @answerSubmitted="processAnswer" />
-    <Results :totalPoints="totalPoints" :awardedPoints="calculatedPoints" v-if="state === 'results'" @nextPressed="loadNext" />
+    <Results :totalPoints="totalPoints" :awardedPoints="calculatedPoints" :correctAnswer="mapPool[currentMap]" :submittedAnswer="submittedAnswer" v-if="state === 'results'" @nextPressed="loadNext" />
   </div>
 </template>
 
