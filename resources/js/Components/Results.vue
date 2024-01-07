@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: ['totalPoints', 'awardedPoints', 'correctAnswer', 'submittedAnswer'],
+  props: ['totalPoints', 'awardedPoints', 'correctAnswer', 'submittedAnswer', 'final'],
   methods: {
     getMapNumber(num) {
       if (num < 10) {
@@ -20,12 +20,10 @@ export default {
       <div class="answers pb-3">
         <div class="answer" id="answercorrect">
           <div class="answer-img"></div>
-          <!--<img src="https://prod.trackmania.core.nadeo.online/storageObjects/35ebeb63-c884-4d1d-ad6e-4ca004e92b1b.jpg" alt="">-->
           <p class="text-center pt-2">Correct answer: {{ getMapNumber(correctAnswer) }}</p>
         </div>
         <div class="answer" id="answeryours">
           <div class="answer-img"></div>
-          <!--<img src="https://prod.trackmania.core.nadeo.online/storageObjects/35ebeb63-c884-4d1d-ad6e-4ca004e92b1b.jpg" alt="">-->
           <p class="text-center pt-2">Your answer: {{ getMapNumber(submittedAnswer) }}</p>
         </div>
       </div>
@@ -34,7 +32,7 @@ export default {
         <p>Total points: {{ totalPoints }}</p>
       </div>
       <div class="results-controls text-center pb-5">
-        <button @click="this.$emit('nextPressed')" class="button-next py-2 px-4 rounded">Next</button>
+        <button @click="this.$emit('nextPressed')" class="button-next py-2 px-4 rounded">{{ final ? 'See Results' : 'Next Round' }}</button>
       </div>
     </div>
   </div>
@@ -78,7 +76,6 @@ export default {
         background-position: center;
       }
       :first-child.answer {
-        
         padding-right: 0;
       }
       :last-child.answer {

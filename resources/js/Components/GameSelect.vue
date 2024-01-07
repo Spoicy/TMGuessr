@@ -37,7 +37,7 @@ export default {
       this.selectState = value;
     },
     gameStart() {
-      this.$emit('gameStart', this.selectState, this.selectedGame, this.selectedCampaign, this.sharelinkChecked);
+      this.$emit('gameStart', this.selectedGame, this.selectedCampaign, this.sharelinkChecked);
     }
   },
 }

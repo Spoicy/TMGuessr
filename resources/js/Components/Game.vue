@@ -1,18 +1,21 @@
 <script>
   import MapSelect from '@/Components/MapSelect.vue';
   import Results from '@/Components/Results.vue';
+  import GameResults from '@/Components/GameResults.vue';
 
   export default {
     props: ['mode', 'game', 'campaign'],
     components: {
-      MapSelect, Results
+      MapSelect, Results, GameResults
     },
     data() {
       return {
+        isOngoing: true,
         state: 'select',
         mapPool: [9, 4, 3, 1, 7],
         currentMap: 0,
         submittedAnswer: 0,
+        pointsAwarded: [],
         totalPoints: 0,
         calculatedPoints: 0,
         timerEnabled: true,
@@ -37,16 +40,24 @@
         } else {
           this.calculatedPoints = 0;
         }
+        this.pointsAwarded.push(this.calculatedPoints);
         this.totalPoints += this.calculatedPoints;
       },
       loadNext() {
         this.scorePercentage = 100;
         this.timerCount = 0;
         this.currentMap++;
-        this.state = 'select';
-        this.timerEnabled = true;
-        this.calculatedPoints = 0;
-        this.submittedAnswer = 0;
+        if (this.currentMap >= this.mapPool.length) {
+          this.isOngoing = false;
+        } else {
+          this.state = 'select';
+          this.timerEnabled = true;
+          this.calculatedPoints = 0;
+          this.submittedAnswer = 0;
+        }
+      },
+      finishGame() {
+        this.$emit('gameFinished');
       }
     },
     watch: {
@@ -55,7 +66,7 @@
           if (this.timerEnabled) {
             setTimeout(() => {
               this.timerCount++;
-              if (this.timerCount >= 50 && this.timerCount % 10 === 0) {
+              if (this.timerCount >= 50 && this.timerCount % 10 === 0 && this.scorePercentage > 10) {
                 this.scorePercentage--;
               }
             }, 100)
@@ -71,7 +82,9 @@
   <div class="game">
     <div class="image-display"></div>
     <MapSelect v-show="state === 'select'" @answerSubmitted="processAnswer" />
-    <Results :totalPoints="totalPoints" :awardedPoints="calculatedPoints" :correctAnswer="mapPool[currentMap]" :submittedAnswer="submittedAnswer" v-if="state === 'results'" @nextPressed="loadNext" />
+    <Results :totalPoints="totalPoints" :awardedPoints="calculatedPoints" :correctAnswer="mapPool[currentMap]" 
+      :submittedAnswer="submittedAnswer" :final="currentMap >= 4" v-if="state === 'results' && isOngoing" @nextPressed="loadNext" />
+    <GameResults :points="pointsAwarded" :maps="mapPool" :totalPoints="totalPoints" v-if="!isOngoing" @donePressed="finishGame" />
   </div>
 </template>
 

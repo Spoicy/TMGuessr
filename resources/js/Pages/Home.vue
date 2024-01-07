@@ -26,13 +26,17 @@ export default {
       this.selectedGame = value;
       console.log('game updated in homeview to ' + value);
     },
-    gameStart(mode, game, campaign, shared) {
-      this.selectedMode = mode;
+    gameStart(game, campaign, shared) {
       this.selectedGame = game;
       this.selectedCampaign = campaign;
       this.shared = shared;
       this.gameOngoing = true;
       this.$emit('gameStart');
+    },
+    resetGame() {
+      this.gameOngoing = false;
+      this.selectedGame = '';
+      this.selectedCampaign = '';
     }
   },
 };
@@ -47,7 +51,7 @@ export default {
       <GameSelect :selectedMode="selectedMode" @modeUpdate="updateMode" @gameUpdate="updateGame" @gameStart="gameStart"/>
     </main>
     <main v-else>
-      <Game :mode="selectedMode" :game="selectedGame" :campaign="selectedCampaign" />
+      <Game :mode="selectedMode" :game="selectedGame" :campaign="selectedCampaign" @gameFinished="resetGame" />
     </main>
   </PageLayout>
 </template>
